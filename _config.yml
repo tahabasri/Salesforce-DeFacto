@@ -3,3 +3,13 @@ plugins:
   - jekyll-remote-theme
 minima:
   skin: auto # switch light/dark with system settings.
+  social_links:
+    - title: Salesforce Defacto repository at GitHub
+      icon: github
+      url: "https://github.com/tahabasri/Salesforce-DeFacto"
+    - title: Taha Basri - Portfolio
+      icon: fa-hand-peace
+      url: "https://tahabasri.com/"
+    - title: Taha Basri - LinkedIn
+      icon: fa-linkedin
+      url: "https://www.linkedin.com/in/tahabasri/"
