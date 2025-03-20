@@ -1,2 +1,5 @@
-markdown:   kramdown
-style:  kjhealy
+remote_theme: jekyll/minima
+plugins:
+  - jekyll-remote-theme
+minima:
+  skin: auto # switch light/dark with system settings.
