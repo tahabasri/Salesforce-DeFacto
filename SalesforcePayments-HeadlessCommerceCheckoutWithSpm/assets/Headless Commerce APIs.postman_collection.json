@@ -1,0 +1,623 @@
+{
+	"info": {
+		"_postman_id": "2f75527f-8724-42c2-a916-de32d6324170",
+		"name": "Headless Commerce APIs",
+		"description": "Documentation: [https://github.com/tahabasri/Salesforce-DeFacto/tree/main/SalesforcePayments-HeadlessCommerceCheckoutWithSpm](https://github.com/tahabasri/Salesforce-DeFacto/tree/main/SalesforcePayments-HeadlessCommerceCheckoutWithSpm)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43266792"
+	},
+	"item": [
+		{
+			"name": "misc",
+			"item": [
+				{
+					"name": "SOAP Community Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const result = xml2Json(pm.response.text())[\"soapenv:Envelope\"][\"soapenv:Body\"].loginResponse.result;",
+									"const url = result.serverUrl.split(\"/\");",
+									"",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set(\"_accessToken\", result.sessionId);",
+									"context.set(\"_endpoint\", url[0] + \"//\" + url[2]);",
+									"context.set(\"_userId\", result.userId);",
+									"context.set(\"_orgId\", result.userInfo.organizationId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"type": "text"
+							},
+							{
+								"key": "SOAPAction",
+								"value": "login",
+								"type": "text"
+							},
+							{
+								"key": "charset",
+								"value": "UTF-8",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "text/xml",
+								"type": "text"
+							},
+							{
+								"key": "organizationId",
+								"value": "00D5e000004jkp3EAA",
+								"type": "text"
+							},
+							{
+								"key": "portalId",
+								"value": "0DB5e0000008SE7GAM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"urn:partner.soap.sforce.com\">\n  <SOAP-ENV:Header>\n    <ns1:LoginScopeHeader>\n      <ns1:organizationId>{{_orgId}}</ns1:organizationId>\n    </ns1:LoginScopeHeader>\n  </SOAP-ENV:Header>\n  <SOAP-ENV:Body>\n    <ns1:login>\n      <ns1:username>{{username}}</ns1:username>\n      <ns1:password>{{password}}</ns1:password>\n    </ns1:login>\n  </SOAP-ENV:Body>\n</SOAP-ENV:Envelope>"
+						},
+						"url": {
+							"raw": "{{_siteUrl}}/services/Soap/u/{{version}}",
+							"host": [
+								"{{_siteUrl}}"
+							],
+							"path": [
+								"services",
+								"Soap",
+								"u",
+								"{{version}}"
+							]
+						},
+						"description": "Logs in to the login server and starts a client session.\n\nMake sure to set the `url`, `username`, `password` and `secretToken` environment variables before sending this request.\nOn success, the request will automatically collect your authentication token for later use."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Commerce Checkout",
+					"protocolProfileBehavior": {
+						"followAuthorizationHeader": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cartId\": \"{{_cartId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/commerce/webstores/{{_webstoreId}}/checkouts/active",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"commerce",
+								"webstores",
+								"{{_webstoreId}}",
+								"checkouts",
+								"active"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Commerce Checkout",
+			"item": [
+				{
+					"name": "1 - Get Current Cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.environment.set(\"_cartId\", jsonData.cartId);",
+									"pm.environment.set(\"_accountId\", jsonData.accountId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followAuthorizationHeader": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/commerce/webstores/{{_webstoreId}}/carts/active",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"commerce",
+								"webstores",
+								"{{_webstoreId}}",
+								"carts",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2 - Start Checkout",
+					"protocolProfileBehavior": {
+						"followAuthorizationHeader": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cartId\": \"{{_cartId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/commerce/webstores/{{_webstoreId}}/checkouts",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"commerce",
+								"webstores",
+								"{{_webstoreId}}",
+								"checkouts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Check Checkout Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"// data is valid only if response status = 200 (not 202)",
+									"pm.environment.set(\"_currencyIsoCode\", jsonData.cartSummary.currencyIsoCode);",
+									"pm.environment.set(\"_cartAmount\", jsonData.cartSummary.grandTotalAmount);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/commerce/webstores/{{_webstoreId}}/checkouts/active",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"commerce",
+								"webstores",
+								"{{_webstoreId}}",
+								"checkouts",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4 - Add Delivery Information",
+					"protocolProfileBehavior": {
+						"followAuthorizationHeader": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"deliveryAddress\": {\n    \"name\": \"Alan Johnson\",\n    \"region\": \"CA\",\n    \"country\": \"US\",\n    \"city\": \"San Francisco\",\n    \"street\": \"415 Mission St\",\n    \"postalCode\": \"94105\"\n  },\n  \"desiredDeliveryDate\": \"2021-05-28T16:41:41.090Z\",\n  \"shippingInstructions\": \"type code 1234 on gate keypad\"\n}"
+						},
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/commerce/webstores/{{_webstoreId}}/checkouts/active",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"commerce",
+								"webstores",
+								"{{_webstoreId}}",
+								"checkouts",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5 - Get Store Application Context",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.environment.set(\"_paymentMethodSetDevName\", jsonData.checkoutSettings.paymentConfiguration.paymentMethodSetDevName);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/commerce/webstores/{{_webstoreId}}/application-context",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"commerce",
+								"webstores",
+								"{{_webstoreId}}",
+								"application-context"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6 - Retrieve Payment Method Set Information",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.environment.set(\"_gatewayId\", jsonData.paymentMethodSetAccounts[0].gatewayId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/payments/payment-method-sets?developerName={{_paymentMethodSetDevName}}",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"payments",
+								"payment-method-sets"
+							],
+							"query": [
+								{
+									"key": "developerName",
+									"value": "{{_paymentMethodSetDevName}}"
+								}
+							]
+						},
+						"description": "Gets the list of icons and colors used by themes in the Salesforce application. Theme information is provided for objects in your organization that use icons and colors in the Salesforce UI.\n\nThe If-Modified-Since header can be used with this resource, with a date format of EEE, dd MMM yyyy HH:mm:ss z. When this header is used, if the object metadata has not changed since the provided date, a 304 Not Modified status code is returned, with no response body.\n\nhttps://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_themes.htm"
+					},
+					"response": []
+				},
+				{
+					"name": "7 - Authorize Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.environment.set(\"_paymentGroupId\", jsonData.paymentGroup.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accountId\": \"{{_accountId}}\",\n  \"paymentGatewayId\": \"{{_gatewayId}}\",\n  \"amount\": {{_cartAmount}},\n  \"comments\": \"comments\",\n  \"paymentGroup\": {\n    \"createPaymentGroup\": \"true\",\n    \"sourceObjectId\": \"\", // will be populated after the order is placed\n    \"currencyIsoCode\": \"{{_currencyIsoCode}}\"\n  },\n  \"paymentMethod\": {\n    \"id\": \"{{spmId}}\"\n  },\n  \"currencyIsoCode\": \"{{_currencyIsoCode}}\"\n}"
+						},
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/commerce/payments/authorizations",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"commerce",
+								"payments",
+								"authorizations"
+							]
+						},
+						"description": "Gets the list of icons and colors used by themes in the Salesforce application. Theme information is provided for objects in your organization that use icons and colors in the Salesforce UI.\n\nThe If-Modified-Since header can be used with this resource, with a date format of EEE, dd MMM yyyy HH:mm:ss z. When this header is used, if the object metadata has not changed since the provided date, a 304 Not Modified status code is returned, with no response body.\n\nhttps://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_themes.htm"
+					},
+					"response": []
+				},
+				{
+					"name": "[BROKEN] 8 - Update Payments Information",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"paymentToken\": \"{{_paymentIntent}}\",\n    \"requestType\": \"PostAuth\",\n    \"billingAddress\": {\n        \"city\": \"San Francisco\",\n        \"country\": \"US\",\n        \"name\": \"Alan Johnson\",\n        \"postalCode\": \"94105\",\n        \"region\": \"CA\",\n        \"street\": \"415 Mission St\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/commerce/webstores/{{_webstoreId}}/checkouts/active/payments",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"commerce",
+								"webstores",
+								"{{_webstoreId}}",
+								"checkouts",
+								"active",
+								"payments"
+							]
+						},
+						"description": "Gets the list of icons and colors used by themes in the Salesforce application. Theme information is provided for objects in your organization that use icons and colors in the Salesforce UI.\n\nThe If-Modified-Since header can be used with this resource, with a date format of EEE, dd MMM yyyy HH:mm:ss z. When this header is used, if the object metadata has not changed since the provided date, a 304 Not Modified status code is returned, with no response body.\n\nhttps://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_themes.htm"
+					},
+					"response": []
+				},
+				{
+					"name": "9 - Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{_accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_endpoint}}/services/data/{{version}}/commerce/webstores/{{_webstoreId}}/checkouts/active/orders",
+							"host": [
+								"{{_endpoint}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"{{version}}",
+								"commerce",
+								"webstores",
+								"{{_webstoreId}}",
+								"checkouts",
+								"active",
+								"orders"
+							]
+						},
+						"description": "Gets the list of icons and colors used by themes in the Salesforce application. Theme information is provided for objects in your organization that use icons and colors in the Salesforce UI.\n\nThe If-Modified-Since header can be used with this resource, with a date format of EEE, dd MMM yyyy HH:mm:ss z. When this header is used, if the object metadata has not changed since the provided date, a 304 Not Modified status code is returned, with no response body.\n\nhttps://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_themes.htm"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "_endpoint",
+			"value": "<MyDomain>>Current My Domain URL>",
+			"type": "string"
+		},
+		{
+			"key": "_webstoreId",
+			"value": "<storeId>",
+			"type": "string"
+		},
+		{
+			"key": "version",
+			"value": "v63.0",
+			"type": "string"
+		},
+		{
+			"key": "spmId",
+			"value": "<SavedPaymentMethodId>",
+			"type": "string"
+		},
+		{
+			"key": "_siteUrl",
+			"value": "<storeUrl>",
+			"type": "string"
+		},
+		{
+			"key": "_orgId",
+			"value": "<SalesforceOrgId>",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "<communityUsername>",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "<communityPassword>",
+			"type": "string"
+		}
+	]
+}

@@ -16,6 +16,9 @@ Such niche use case may be required to implement if the following business requi
 - Setup Postman with necessary information to authenticate as the external user (Store user).
 - The process assumes that there is already an active cart with existing Cart Item records.
 
+## Postman Collection
+Import the following collection to get the APIs mentioned in this solution: [Headless Commerce APIs.postman_collection.json](./assets/Headless%20Commerce%20APIs.postman_collection.json).
+
 ## Headless Commerce Checkout Process with Saved Payment Method (Salesforce Payments)
 
 Below is the flow that describes the series of processes/APIs to call in order to create an order from a cart. As mentioned in the notes section, the flow is not currently 100% API driven. A custom logic is introduced as workaround after authorizing payment, this is needed because the `checkouts/active/payments` API is not yet supporting Saved Payment Method records.
