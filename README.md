@@ -1,5 +1,3 @@
-# Salesforce DeFacto
-
 **Salesforce DeFacto** – Practical applications of Salesforce features and capabilities.
 
 ![Project Banner Image](rsc/banner.jpg)
