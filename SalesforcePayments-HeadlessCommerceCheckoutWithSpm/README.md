@@ -25,8 +25,6 @@ The following flow outlines the sequence of processes and API calls required to 
 
 ![Cart to Order Lifecycle Diagram](rsc/HeadlessCommerceCheckoutWithSavedPaymentMethod.png)
 
-<div style="overflow-x:auto;">
-
 | Process    | Resource | Method | Extra Permissions | Notes |
 | -------- | -------- | ------- | -------- | ------- |
 | Get Active Cart  | [Commerce Webstore Cart](https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/connect_resources_commerce_webstore_cart.htm) | GET | N/A |  |
@@ -38,8 +36,6 @@ The following flow outlines the sequence of processes and API calls required to 
 | Authorize Payment | [Authorize Payment](https://developer.salesforce.com/docs/commerce/salesforce-commerce/references/comm-ccs-payments-ref?meta=authorizePayment) | POST  | N/A | - `paymentGroup.sourceObjectId` can be empty, as it will be populated after the order is placed. <br> - `paymentMethod.id` references the Saved Payment Method ID. |
 | Update Checkout Payment Information | Custom logic | N/A  | Custom WebCart Permissions | Custom logic updates `WebCart.PaymentMethodId` and `WebCart.PaymentGroupId`. These fields may not be updatable by external users due to license/sharing restrictions. Options for implementation include Composite API, Flows, or Apex. |
 | Place Order | [Commerce Webstore Checkout Orders](https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/connect_resources_commerce_webstore_checkouts_place_order.htm) | POST | N/A |  |
-
-</div>
 
 ## Additional Resources
 - [Commerce B2B and D2C Resources](https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/connect_resources_commerce.htm)
