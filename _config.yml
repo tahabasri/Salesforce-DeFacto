@@ -3,4 +3,3 @@ plugins:
 - jekyll-remote-theme
 title: [Salesforce DeFacto]
 description: [Practical applications of Salesforce features and capabilities]
-show_downloads: true
