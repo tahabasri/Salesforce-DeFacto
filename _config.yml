@@ -5,6 +5,7 @@ title: Salesforce DeFacto
 description: Practical applications of Salesforce features and capabilities
 author: "Taha Basri"
 email: "tahabsri@gmail.com"
+repository: https://github.com/tahabasri/Salesforce-DeFacto
 minima:
   skin: auto # switch light/dark with system settings.
   social_links:

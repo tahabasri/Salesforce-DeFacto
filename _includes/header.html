@@ -5,5 +5,7 @@
       {%- assign page_paths = site.minima.nav_pages | default: default_paths -%}
       {%- assign page_titles = site.pages | map: 'title' | compact %}
       <a class="site-title" rel="author" href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
+  
+      <a class="github-repo" href="{{ site.repository }}">Github Repo</a>
     </div>
   </header>
