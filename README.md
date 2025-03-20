@@ -10,6 +10,9 @@
 - Straight to the point
 - Plug-and-play assets
 
+## Disclaimer⚠️ 
+All content shared in this repository is my own and does not represent the views or positions of Salesforce.
+
 ## Library
 
 | Product(s)  | Use Case |
