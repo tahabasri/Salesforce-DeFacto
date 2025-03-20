@@ -1,4 +1,4 @@
-remote_theme: pages-themes/minimal@v2.5.2
+remote_theme: jekyll/minima@c6e74bb
 plugins:
 - jekyll-remote-theme 
 title: Salesforce DeFacto
