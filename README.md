@@ -17,4 +17,4 @@ All content shared in this repository is my own and does not represent the views
 
 | Product(s)  | Use Case |
 |-------------|---------|
-| B2B and D2C Commerce with Salesforce Payments | [Headless Commerce Checkout with Saved Payment Method](./SalesforcePayments-HeadlessCommerceCheckoutWithSpm/) |
+| B2B and D2C Commerce with Salesforce Payments | [Headless Commerce Checkout with Saved Payment Method](./SalesforcePayments/HeadlessCommerceCheckoutWithSpm/) |
