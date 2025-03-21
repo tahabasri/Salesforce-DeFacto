@@ -15,9 +15,7 @@ A few challenges that we are facing now:
   - Have you had any best practices to support custom LWR commerce components to support RTL languages?
 - Any other caveats we should look out for, specific to RTL language support for LWR commerce templates, or LWR templates in general
 
-This niche use case may be necessary if the following business requirements apply:
-- Implement a headless checkout process (not relying on store managed checkout).
-- Use a saved payment method instead of capturing payment details during checkout.
+Here is some guidance you may follow for RTL with LWR. I worked with RTL before LWR and I believe it should be similar as we used plain JS and CSS which helped us get away from platform limitations.
 
 ## Notes
 
