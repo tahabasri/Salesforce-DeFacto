@@ -56,27 +56,31 @@ Same in the head markup, add these styling classes:
 </style>
 ```
 
-First one `rtlEnabled` will be bound to the HTML element in your DOM. The second selector will be used for any custom adjustments, more on this later in upcoming section.
+| Without RTL Changes                          | With RTL Changes                          |
+|---------------------------------------------|-------------------------------------------|
+| ![Without RTL changes](./rsc/no-rtl.png)    | ![With RTL changes](./rsc/with-rtl.png)   |
 
-![Without RTL changes](./rsc/no-rtl.png)
+> Guidelines for custom adjustments on standard and custom components
 
-![With RTL changes](./rsc/with-rtl.png)
-
-> Guidelines for custom component development
-
-Following same approach, you'll now need to add classes related to that special class `rtlEnabled` , so a custom component will have a class
-
+The previous approach will usually do most of the work to show your site in RTL layout, still, some standard or custom components will/may require further adjustments, to do that, you can follow these steps:
+- add your adjustments to a new CSS class with a selector including the `rtlEnabled`, example:
 ```
 .rtlEnabled .rtlSupport {
-    direction: rtl;
     justify-items: right; /* additional adjustments*/
 }
 ```
+- bind the CSS class to the standard or custom component using the Style tab in Experience Builder like below
+![Add custom styling](rsc/custom-styling.png)
+- publish your changes
 
-This styling will be triggered only if `rtlEnabled` is bound to the main container, which is controlled by the JS code above.
+You can see the effect of this approach in the screenshots below (compare the alignment of the text `Stay in the Loop`):
+
+| RTL + No Adjustments            | RTL + Additional Adjustments          |
+|---------------------------------------------|-------------------------------------------|
+| ![Custom styling before adjustments](rsc/without-adj.png) | ![Custom styling after adjustments](rsc/with-adj.png) |
+
+**How this works?** This last styling (`rtlSupport`) will be applied only if `rtlEnabled` is bound to the main container, which is controlled by the JS in first section.
 
 Caveats:
 - obviously, the whole content should be translated in order to show full RTL language, Translation Workbench will be your new friend
 - using this approach, you may need to tweak some styling for RTL content, you'll use special styling via CSS classes also, the main container is helping you with 90% of the work, but 10% may need to be manually done on the components level
-
-## Additional Resources
