@@ -1,15 +1,15 @@
 # Support RTL Layouts in LWR Sites
 
 ## Context
-- You have a requirement to build an LWR Site with support of multiple languages.
-- The user will see the site based on his profile's language initially.
-- The user will have ability to switch between site supported languages.
-- Site should be displayed in RTL layout for languages supporting RTL (e.g Arabic)
+- You have a requirement to build an LWR Site with support for multiple languages.
+- The user will see the site based on their profile's language initially.
+- The user will have the ability to switch between site-supported languages.
+- The site should be displayed in RTL layout for languages supporting RTL (e.g., Arabic).
 
 Here is some guidance you may follow for RTL with LWR.
 
 ## Notes
-- RTL is not officially supported in an OOTB fashion. Customers should be able to achieve RTL by adding `dir="rtl"` to the body tag of the site and then making some CSS and layout adjustments to the site to make it meet their needs.
+- RTL is not officially supported in an OOTB fashion.
 
 ## Prerequisites
 - Check the [Right-to-Left (RTL) Language Support](https://help.salesforce.com/s/articleView?id=xcloud.faq_getstart_rtl.htm&type=5)
@@ -22,7 +22,7 @@ The idea is to bind `direction: rtl;` to the html element in your site after ren
 
 ![RTL bound to HTML element](rsc/rtl-html.png)
 
-First thing to do is add the trigger code to the Head Markup, this snippet will look for the cookie `PreferredLanguage<siteId>` that's generated when the user changes the default language to an RTL supported language.
+First thing to do is add the trigger code to the `Head Markup`, this snippet will look for the cookie `PreferredLanguage<siteId>` that's generated when the user changes the default language to an RTL supported language.
 > This process will work if the RTL language is not the default language, if the requirement is different, the JS code should be adjusted.
 
 ```
@@ -39,15 +39,15 @@ First thing to do is add the trigger code to the Head Markup, this snippet will 
 </script>
 ```
 
-So let's analyze this code:
-- when page loads
-- look for the guilty cookie
-- if it's there and has as value one of the RTL supported languages
+Let's analyze this code:
+- when the page loads,
+- look for the cookie,
+- if it's there and has -as value- one of the RTL supported languages,
 - toggle on the custom class that's responsible for setting correct RTL styling/tweaking
 
-> Make sure you set the Site security to `Relaxed CSP: Permit Access to Inline Scripts and Allowed Hosts` in order to allow inline scripts to function, this won't reduce your security as the inline code is messing with styling, no external code is getting triggered.
+> Make sure you set the Site security to `Relaxed CSP: Permit Access to Inline Scripts and Allowed Hosts` in order to allow inline scripts to function. No external code is being executed here.
 
-Same in the head markup, add these styling classes:
+Next, in the head markup, add these styling classes:
 ```
 <style>
     .rtlEnabled {
@@ -60,27 +60,31 @@ Same in the head markup, add these styling classes:
 |---------------------------------------------|-------------------------------------------|
 | ![Without RTL changes](./rsc/no-rtl.png)    | ![With RTL changes](./rsc/with-rtl.png)   |
 
-> Guidelines for custom adjustments on standard and custom components
+### Guidelines for Custom Adjustments on Standard and Custom Components
 
-The previous approach will usually do most of the work to show your site in RTL layout, still, some standard or custom components will/may require further adjustments, to do that, you can follow these steps:
-- add your adjustments to a new CSS class with a selector including the `rtlEnabled`, example:
+The previous approach will handle most of the work to display your site in RTL layout. However, some standard or custom components may require additional adjustments. Follow these steps to make component-specific adjustments:
+
+1. Add your adjustments to a new CSS class with a selector that includes the `rtlEnabled` class, for example:
 ```
 .rtlEnabled .rtlSupport {
-    justify-items: right; /* additional adjustments*/
+    justify-items: right; /* additional adjustments */
 }
 ```
-- bind the CSS class to the standard or custom component using the Style tab in Experience Builder like below
+
+2. Bind this CSS class to the standard or custom component using the Style tab in Experience Builder as shown below:
 ![Add custom styling](rsc/custom-styling.png)
-- publish your changes
 
-You can see the effect of this approach in the screenshots below (compare the alignment of the text `Stay in the Loop`):
+3. Publish your changes
 
-| RTL + No Adjustments            | RTL + Additional Adjustments          |
-|---------------------------------------------|-------------------------------------------|
+You can see the effect of these adjustments in the screenshots below (compare the alignment of the text `Stay in the Loop`):
+
+| RTL + No Adjustments                       | RTL + Additional Adjustments                |
+|-------------------------------------------|-------------------------------------------|
 | ![Custom styling before adjustments](rsc/without-adj.png) | ![Custom styling after adjustments](rsc/with-adj.png) |
 
-**How this works?** This last styling (`rtlSupport`) will be applied only if `rtlEnabled` is bound to the main container, which is controlled by the JS in first section.
+**How this works:** The additional styling (via `rtlSupport`) will only be applied when the `rtlEnabled` class is bound to the main container, which is controlled by the JavaScript code in the first section.
 
-Caveats:
-- obviously, the whole content should be translated in order to show full RTL language, Translation Workbench will be your new friend
-- using this approach, you may need to tweak some styling for RTL content, you'll use special styling via CSS classes also, the main container is helping you with 90% of the work, but 10% may need to be manually done on the components level
+### Important Considerations:
+
+- The entire content should be translated to provide a complete RTL language experience. Translation Workbench will be essential for this task.
+- While this approach handles approximately 90% of the RTL layout requirements, you may need to manually adjust about 10% of the styling at the component level using the technique described above.
