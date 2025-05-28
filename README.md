@@ -15,5 +15,5 @@ All content shared in this repository is my own and does not represent the views
 
 | Product(s)  | Use Case |
 |-------------|---------|
-| B2B and D2C Commerce with Salesforce Payments | [Headless Commerce Checkout with Saved Payment Method](./SalesforcePayments/HeadlessCommerceCheckoutWithSpm/) |
+| B2B and D2C Commerce with Salesforce Payments | [Headless Commerce Checkout with Saved Payment Method](https://tahabasri.medium.com/sf-defacto-1-salesforce-headless-commerce-checkout-with-saved-payment-method-a38d76e79c78) |
 | Experience Cloud | [Support RTL with LWR Sites](./ExperienceCloud/LWR-SupportRTL/) |
