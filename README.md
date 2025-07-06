@@ -15,5 +15,6 @@ All content shared in this repository is my own and does not represent the views
 
 | Product(s)  | Use Case |
 |-------------|---------|
-| B2B and D2C Commerce with Salesforce Payments | [Headless Commerce Checkout with Saved Payment Method](https://tahabasri.medium.com/sf-defacto-1-salesforce-headless-commerce-checkout-with-saved-payment-method-a38d76e79c78) |
+| Commerce Cloud | [Buyer Group Extensibility for Commerce](https://tahabasri.medium.com/sf-defacto-3-buyer-group-extensibility-for-commerce-efa2c403e042) |
 | Experience Cloud | [Support RTL with LWR Sites](https://tahabasri.medium.com/sf-defacto-2-support-rtl-layouts-in-lwr-sites-f65fe0ff5caa) |
+| Salesforce Payments | [Headless Commerce Checkout with Saved Payment Method](https://tahabasri.medium.com/sf-defacto-1-salesforce-headless-commerce-checkout-with-saved-payment-method-a38d76e79c78) |
