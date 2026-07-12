@@ -1,3 +1,7 @@
+# This blog now lives at [https://tahabasri.com/blog/sfdefacto-rtl-layouts-lwr-sites - the canonical, updated version.](https://tahabasri.com/blog/sfdefacto/)
+
+---
+
 **Salesforce DeFacto** – Practical applications of Salesforce features and capabilities.
 
 ![Project Banner Image](rsc/banner.jpg)
